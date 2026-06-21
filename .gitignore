@@ -1,0 +1,13 @@
+# Foundry
+out/
+cache/
+broadcast/
+
+# Env
+.env
+.env.local
+
+# Deps are vendored as git submodules under lib/ (kept)
+
+# OS
+.DS_Store
