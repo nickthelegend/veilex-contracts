@@ -9,6 +9,7 @@ import "../src/privacy/PrivateSwapVault.sol";
 import "../src/privacy/ViewKeyCompliance.sol";
 import "../src/oracle/PythAdapter.sol";
 import "../src/mocks/MockERC20.sol";
+import "../src/tokens/DUSDC.sol";
 
 /**
  * @notice Full deployment for Veilex on HashKey Chain. Requires PRIVATE_KEY + PYTH_ADDRESS in .env.
@@ -57,6 +58,10 @@ contract Deploy is Script {
         // ── 5. Oracle adapter ──────────────────────
         PythAdapter pythAdapter = new PythAdapter(pythAddr);
 
+        // ── 5b. dUSDC testnet token (faucet-mintable) ──
+        DUSDC dusdc = new DUSDC();
+        dusdc.faucet();
+
         // ── 6. Create initial pools ────────────────
         factory.createPair(address(weth), address(usdc));
         factory.createPair(address(weth), address(wbtc));
@@ -89,6 +94,9 @@ contract Deploy is Script {
         console.log("Oracle:");
         console.log("  PythAdapter:        ", address(pythAdapter));
         console.log("");
+        console.log("Tokens:");
+        console.log("  dUSDC:              ", address(dusdc));
+        console.log("");
         console.log("Test Tokens:");
         console.log("  WETH:               ", address(weth));
         console.log("  USDC:               ", address(usdc));
@@ -103,6 +111,8 @@ contract Deploy is Script {
         console.log("NEXT_PUBLIC_PRIVATE_VAULT_ADDRESS=", address(privateVault));
         console.log("NEXT_PUBLIC_COMPLIANCE_ADDRESS=", address(compliance));
         console.log("NEXT_PUBLIC_PYTH_ADAPTER_ADDRESS=", address(pythAdapter));
+        console.log("NEXT_PUBLIC_STEALTH_REGISTRY_ADDRESS=", address(stealthRegistry));
+        console.log("NEXT_PUBLIC_PAYMENT_TOKEN_ADDRESS=", address(dusdc), "(dUSDC, for veilpay)");
         console.log("========================================\n");
     }
 }
